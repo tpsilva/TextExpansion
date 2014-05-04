@@ -1,4 +1,3 @@
-import tempfile
 import lingotranslator.translator as lingo_translator
 
 class EnglishDictionary:
