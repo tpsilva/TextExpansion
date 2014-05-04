@@ -1,4 +1,5 @@
-
+import tempfile
+import lingotranslator.translator as lingo_translator
 
 class EnglishDictionary:
     def __init__(self):
@@ -20,3 +21,11 @@ class GenericDictionary:
             return self.dictionary[word.lower()]
         except:
             return word
+
+class LingoDictionary:
+    def __init__(self):
+        self.mode = "YYN"
+        lingo_translator.init(self.mode)
+
+    def translate(self, line):
+        return lingo_translator.translate(line)
