@@ -40,11 +40,8 @@ class LingoDictionary:
     def translate(self, line):
         return lingo_translator.translate(line)
 
-class ConceptsDictionary:
+class StopwordsDictionary:
     def __init__(self):
-        self.lingo = LingoDictionary()
-        self.cache = {}
-
         self.load_stopwords()
 
     def load_stopwords(self):
@@ -53,6 +50,13 @@ class ConceptsDictionary:
 
         f = open(stopwords_real_path)
         self.stopwords = [stopword.strip("\n") for stopword in f.readlines()]
+
+class ConceptsDictionary(StopwordsDictionary):
+    def __init__(self):
+        StopwordsDictionary.__init__(self)
+
+        self.lingo = LingoDictionary()
+        self.cache = {}
 
     def translate(self, word):
         if word in self.stopwords:
@@ -75,6 +79,10 @@ class ConceptsDictionary:
         concepts = concepts[concepts.index("===DIVIDER===") + 1:-1]
 
         return " ".join(concepts)
+
+def DisambiguationDictionary(StopwordsDictionary):
+    def __init__(self, sentence):
+        StopwordsDictionary.__init__(self)
 
 
     
