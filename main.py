@@ -1,4 +1,8 @@
 import expansion.dictionary
 
-dic = expansion.dictionary.LingoDictionary()
-print dic.translate("how r u")
+ldic = expansion.dictionary.LingoDictionary()
+print ldic.translate("how r u")
+
+
+cdic = expansion.dictionary.ConceptsDictionary()
+print cdic.translate("car")
