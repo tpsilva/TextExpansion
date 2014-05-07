@@ -76,13 +76,41 @@ class ConceptsDictionary(StopwordsDictionary):
             BABELNET_CONCEPTS_OPTION, word])
 
         concepts = output.split("\n")
-        concepts = concepts[concepts.index("===DIVIDER===") + 1:-1]
+        concepts = concepts[concepts.index(BABELNET_DIVIDER) + 1:-1]
 
         return " ".join(concepts)
 
-def DisambiguationDictionary(StopwordsDictionary):
-    def __init__(self, sentence):
+class DisambiguationDictionary(StopwordsDictionary):
+    def __init__(self):
         StopwordsDictionary.__init__(self)
-
-
     
+    def init_concepts(self, sentence):
+        sentence = self.translate_lingo(sentence)
+        output = subprocess.check_output([BABELNET_SHELL, BABELNET_SCRIPT, 
+            sentence])
+
+        output_lines = output.split("\n")
+        output_lines = output_lines[output_lines.index(BABELNET_DIVIDER) + 1:-1]
+
+        self.concepts = dict([line.split("\t") for line in output_lines])
+        self.remove_stopwords()
+
+    def translate_lingo(self, sentence):
+        lingo = LingoDictionary()
+
+        translated_words = [lingo.translate(word) for word in sentence.split()]
+        return " ".join(translated_words)
+
+    def remove_stopwords(self):
+        for word in self.concepts:
+            if word in self.stopwords:
+                self.concepts[word] = word
+
+    def translate(self, word):
+        word = word.lower()
+
+        try:
+            return self.concepts[word]
+        except:
+            return word
+
