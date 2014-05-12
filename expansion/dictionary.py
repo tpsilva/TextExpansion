@@ -59,10 +59,12 @@ class ConceptsDictionary(StopwordsDictionary):
         self.cache = {}
 
     def translate(self, word):
-        if word in self.stopwords:
+        lingo_translated = self.lingo.translate(word)
+
+        if word in self.stopwords or lingo_translated in self.stopwords:
             return word
 
-        word = self.lingo.translate(word)
+        word = lingo_translated
 
         try:
             return self.cache[word]
@@ -83,9 +85,10 @@ class ConceptsDictionary(StopwordsDictionary):
 class DisambiguationDictionary(StopwordsDictionary):
     def __init__(self):
         StopwordsDictionary.__init__(self)
+        self.lingo = LingoDictionary()
     
     def init_concepts(self, sentence):
-        sentence = self.translate_lingo(sentence)
+        sentence = self.lingo.translate(sentence)
         output = subprocess.check_output([BABELNET_SHELL, BABELNET_SCRIPT, 
             sentence])
 
@@ -95,12 +98,6 @@ class DisambiguationDictionary(StopwordsDictionary):
         self.concepts = dict([line.split("\t") for line in output_lines])
         self.remove_stopwords()
 
-    def translate_lingo(self, sentence):
-        lingo = LingoDictionary()
-
-        translated_words = [lingo.translate(word) for word in sentence.split()]
-        return " ".join(translated_words)
-
     def remove_stopwords(self):
         for word in self.concepts:
             if word in self.stopwords:
@@ -108,9 +105,10 @@ class DisambiguationDictionary(StopwordsDictionary):
 
     def translate(self, word):
         word = word.lower()
+        lingo_translated = self.lingo.translate(word)
 
         try:
-            return self.concepts[word]
+            return self.concepts[lingo_translated]
         except:
             return word
 
