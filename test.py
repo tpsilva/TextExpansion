@@ -1,9 +1,7 @@
 import expansion.dictionary
 import expansion.expansion
 
-expansion.expansion.expand(["how r u"], (True, True, True, True))
-expansion.expansion.expand(["lemme noe when u get der"], (True, True, True, True))
-
+expansion.expansion.expand(["Ok lar... Joking wif u oni..."], (True, True, True, False))
 
 #ldic = expansion.dictionary.LingoDictionary()
 #print ldic.translate("r")

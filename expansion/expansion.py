@@ -25,7 +25,8 @@ def expand(samples, parameters, *dictionary_filenames):
     for sample in samples:
         translated_sample = []
         
-        dictionaries[DISAMBIGUATION].init_concepts(sample)
+        if parameters[DISAMBIGUATION]: # only init disambiguation when needed
+            dictionaries[DISAMBIGUATION].init_concepts(sample)
 
         for token in re.split("[\t\ ]", sample):
             original_added = False

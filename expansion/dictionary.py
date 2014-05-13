@@ -59,9 +59,10 @@ class ConceptsDictionary(StopwordsDictionary):
         self.cache = {}
 
     def translate(self, word):
+        word = word.lower()
         lingo_translated = self.lingo.translate(word)
 
-        if word in self.stopwords or lingo_translated in self.stopwords:
+        if word in self.stopwords or lingo_translated in self.stopwords or not lingo_translated:
             return word
 
         word = lingo_translated
