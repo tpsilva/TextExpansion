@@ -16,6 +16,15 @@ def init_dictionaries():
 
     return dictionaries
 
+def init_custom_dictionaries(dictionary_filenames):
+    custom_dictionaries = []
+
+    for dictionary_filename in dictionary_filenames:
+        custom_dictionaries.append(dictionary.GenericDictionary(dictionary_filename))
+
+    return custom_dictionaries
+
+
 def translate(token, dictionary, expanded_sample):
     translation = dictionary.translate(token)
     if translation not in expanded_sample:
@@ -23,10 +32,7 @@ def translate(token, dictionary, expanded_sample):
 
 def expand(samples, parameters, *dictionary_filenames):
     dictionaries = init_dictionaries()
-
-    custom_dictionaries = []
-    for dictionary_filename in dictionary_filenames:
-        custom_dictionaries.append(dictionary.GenericDictionary(dictionary_filename))
+    custom_dictionaries = init_custom_dictionaries(dictionary_filenames)
 
     expanded_samples = []
     for sample in samples:
