@@ -1,7 +1,7 @@
 import expansion.dictionary
 import expansion.expansion
 
-expansion.expansion.expand(["Ok lar... Joking wif u oni..."], (True, True, True, False))
+expansion.expansion.expand(["Ok lar... Joking wif u oni... man"], (True, False, True, False), "res/custom.txt")
 
 #ldic = expansion.dictionary.LingoDictionary()
 #print ldic.translate("r")

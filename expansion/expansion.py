@@ -19,7 +19,7 @@ def expand(samples, parameters, *dictionary_filenames):
 
     custom_dictionaries = []
     for dictionary_filename in dictionary_filenames:
-        custom_dictionaries = dictionary.GenericDictionary(dictionary_filename)
+        custom_dictionaries.append(dictionary.GenericDictionary(dictionary_filename))
 
     translated_samples = []
     for sample in samples:
@@ -52,5 +52,11 @@ def expand(samples, parameters, *dictionary_filenames):
                 if should_append(original_added, token, disambiguation_translation):
                     translated_sample.append(disambiguation_translation)
                     original_added = disambiguation_translation == token
+
+            for custom_dictionary in custom_dictionaries:
+                translation = custom_dictionary.translate(token)
+                if should_append(original_added, token, translation):
+                    translated_sample.append(translation)
+                    original_added = translation == token
 
         print " ".join(translated_sample)
