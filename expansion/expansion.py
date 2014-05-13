@@ -9,6 +9,7 @@ DISAMBIGUATION = 3
 
 def init_dictionaries():
     dictionaries = range(4) # check if there's a better way to create the list
+
     dictionaries[LINGO] = dictionary.LingoDictionary()
     dictionaries[ORIGINAL] = None
     dictionaries[CONCEPTS] = dictionary.ConceptsDictionary()
@@ -42,7 +43,6 @@ def expand(samples, parameters, *dictionary_filenames):
             dictionaries[DISAMBIGUATION].init_concepts(sample)
 
         for token in re.split("[\t\ ]", sample.lower()):
-            original_added = False
 
             if parameters[ORIGINAL]:
                 expanded_sample.append(token)
