@@ -38,7 +38,12 @@ class LingoDictionary:
         lingo_translator.init(self.mode)
 
     def translate(self, line):
-        return lingo_translator.translate(line)
+        translation = lingo_translator.translate(line)
+
+        if not translation:
+            return line
+        else:
+            return translation
 
 class StopwordsDictionary:
     def __init__(self):
@@ -59,10 +64,9 @@ class ConceptsDictionary(StopwordsDictionary):
         self.cache = {}
 
     def translate(self, word):
-        word = word.lower()
         lingo_translated = self.lingo.translate(word)
 
-        if word in self.stopwords or lingo_translated in self.stopwords or not lingo_translated:
+        if word in self.stopwords or lingo_translated in self.stopwords:
             return word
 
         word = lingo_translated
