@@ -39,15 +39,18 @@ def expand(samples, parameters, *dictionary_filenames):
                 lingo_translation = dictionaries[LINGO].translate(token)
                 if should_append(original_added, token, lingo_translation):
                     translated_sample.append(lingo_translation)
+                    original_added = lingo_translation == token
 
             if parameters[CONCEPTS] and not parameters[DISAMBIGUATION]:
                 concepts_translation = dictionaries[CONCEPTS].translate(token)
                 if should_append(original_added, token, concepts_translation):
                     translated_sample.append(concepts_translation)
+                    original_added = concepts_translation == token
 
             if parameters[DISAMBIGUATION]:
                 disambiguation_translation = dictionaries[DISAMBIGUATION].translate(token)
                 if should_append(original_added, token, disambiguation_translation):
                     translated_sample.append(disambiguation_translation)
+                    original_added = disambiguation_translation == token
 
         print " ".join(translated_sample)
