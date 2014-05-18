@@ -1,7 +1,8 @@
 import expansion.dictionary
 import expansion.expansion
+import ui.window
 
-expansion.expansion.expand(["Ok lar... Joking wif u oni... man", "This is another example"], (True, False, False, False), "res/custom.txt")
+# expansion.expansion.expand(["Ok lar... Joking wif u oni... man", "This is another example"], (True, False, False, False), "res/custom.txt")
 
 #ldic = expansion.dictionary.LingoDictionary()
 #print ldic.translate("r")
@@ -21,4 +22,7 @@ expansion.expansion.expand(["Ok lar... Joking wif u oni... man", "This is anothe
 #
 #print ddic.translate("test")
 #print ddic.translate("TEST")
+
+window = ui.window.MainWindow()
+window.run()
 
