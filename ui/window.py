@@ -35,9 +35,11 @@ class MainWindow(Gtk.Window):
         self.parameters_hbox.pack_start(self.original_toggle, True, True, 0)
 
         self.concepts_toggle = Gtk.ToggleButton("Concepts")
+        self.concepts_toggle.connect("toggled", self.concepts_toggle_toggled)
         self.parameters_hbox.pack_start(self.concepts_toggle, True, True, 0)
 
         self.disambiguation_toggle = Gtk.ToggleButton("Disambiguation")
+        self.disambiguation_toggle.connect("toggled", self.disambiguation_toggle_toggled)
         self.parameters_hbox.pack_start(self.disambiguation_toggle, True, True, 0)
 
         # Custom dictionaries
@@ -76,6 +78,14 @@ class MainWindow(Gtk.Window):
             self.file_entry.set_text(select_dialog.get_filename())
 
         select_dialog.destroy()
+
+    def concepts_toggle_toggled(self, widget):
+        if widget.get_active():
+            self.disambiguation_toggle.set_active(not widget.get_active())
+
+    def disambiguation_toggle_toggled(self, widget):
+        if widget.get_active():
+            self.concepts_toggle.set_active(not widget.get_active())
 
     def add_button_clicked(self, widget):
         select_dialog = Gtk.FileChooserDialog("Choose a custom dictionary", self, Gtk.FileChooserAction.OPEN, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
