@@ -61,4 +61,4 @@ def expand(samples, parameters, *dictionary_filenames):
 
         expanded_samples.append(" ".join(expanded_sample))
 
-    print "\n".join(expanded_samples)
+    return expanded_samples

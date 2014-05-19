@@ -1,5 +1,7 @@
 from gi.repository import Gtk
 
+from expansion import expansion
+
 class MainWindow(Gtk.Window):
 
     def __init__(self):
@@ -105,7 +107,22 @@ class MainWindow(Gtk.Window):
             model.remove(iter)
     
     def expand_button_clicked(self, widget):
-        print "TODO"
+        # TODO: add this to a controller
+        input_file = open(self.file_entry.get_text())
+        samples = [l.strip("\n") for l in input_file.readlines()]
+        input_file.close()
+
+        custom_dictionaries = map(lambda x: x[0], self.custom_dict_liststore)
+
+        expanded_samples = expansion.expand(samples,
+            (self.lingo_toggle.get_active(), self.original_toggle.get_active(), 
+            self.concepts_toggle.get_active(), self.disambiguation_toggle.get_active()),
+            *custom_dictionaries)
+
+        output_file = open(self.file_entry.get_text() + "_expanded.txt", "w")
+        output_file.write("\n".join(expanded_samples))
+        output_file.close()
+
 
     def run(self):
         self.connect("delete-event", Gtk.main_quit)
