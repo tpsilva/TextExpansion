@@ -38,7 +38,7 @@ function install_babelnet() {
 
 echo "Cloning lingotranslator from github"
 
-# git clone https://github.com/tiagopasq/lingotranslator
+git clone https://github.com/tiagopasq/lingotranslator
 
 echo "Do you want to install BabelNet?"
 read install_babel
