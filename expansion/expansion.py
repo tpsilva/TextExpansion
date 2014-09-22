@@ -26,12 +26,16 @@ def init_custom_dictionaries(dictionary_filenames):
     return custom_dictionaries
 
 
-def translate(token, dictionary, expanded_sample):
-    translation = dictionary.translate(token)
+def translate(token, dictionary, expanded_sample, babelnet_parameters=None):
+    if babelnet_parameters is None:
+        translation = dictionary.translate(token)
+    else:
+        translation = dictionary.translate(token, babelnet_parameters)
+        
     if translation not in expanded_sample:
         expanded_sample.append(translation)
 
-def expand(samples, parameters, *dictionary_filenames):
+def expand(samples, parameters, babelnet_parameters, *dictionary_filenames):
     dictionaries = init_dictionaries()
     custom_dictionaries = init_custom_dictionaries(dictionary_filenames)
 
@@ -40,9 +44,12 @@ def expand(samples, parameters, *dictionary_filenames):
         expanded_sample = []
         
         if parameters[DISAMBIGUATION]: # only init disambiguation when needed
-            dictionaries[DISAMBIGUATION].init_concepts(sample)
+            dictionaries[DISAMBIGUATION].init_concepts(sample, babelnet_parameters)
 
         for token in re.split("[\t\ ]", sample.lower()):
+
+            if not token.strip():
+                continue
 
             if parameters[ORIGINAL]:
                 expanded_sample.append(token)
@@ -51,7 +58,7 @@ def expand(samples, parameters, *dictionary_filenames):
                 translate(token, dictionaries[LINGO], expanded_sample)
 
             if parameters[CONCEPTS] and not parameters[DISAMBIGUATION]:
-                translate(token, dictionaries[CONCEPTS], expanded_sample)
+                translate(token, dictionaries[CONCEPTS], expanded_sample, babelnet_parameters)
 
             if parameters[DISAMBIGUATION]:
                 translate(token, dictionaries[DISAMBIGUATION], expanded_sample)

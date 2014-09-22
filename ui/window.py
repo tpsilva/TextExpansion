@@ -1,4 +1,5 @@
-from gi.repository import Gtk
+from gi.repository import Gtk, GObject
+import thread
 
 from expansion import expansion
 
@@ -7,10 +8,29 @@ class MainWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Text Expansion")
 
+        self.set_resizable(False)
         self.set_border_width(10)
 
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(self.vbox)
+
+        # Menu
+        self.menu = Gtk.MenuBar()
+        self.vbox.pack_start(self.menu, True, True, 0)
+
+        self.settings_item = Gtk.MenuItem("Settings")
+        self.menu.append(self.settings_item)
+
+        self.settings_submenu = Gtk.Menu()
+        self.settings_item.set_submenu(self.settings_submenu)
+
+        self.use_wordnet = Gtk.CheckMenuItem("Use wordnet")
+        self.settings_submenu.append(self.use_wordnet)
+        self.use_wordnet.set_active(True)
+
+        self.use_wikipedia = Gtk.CheckMenuItem("Use wikipedia")
+        self.settings_submenu.append(self.use_wikipedia)
+        self.use_wikipedia.set_active(True)
 
         # File selection
         self.top_hbox = Gtk.Box(spacing=6)
@@ -107,7 +127,12 @@ class MainWindow(Gtk.Window):
             model.remove(iter)
     
     def expand_button_clicked(self, widget):
-        # TODO: add this to a controller
+        self.progress = ProgressWindow()
+        self.progress.start()
+
+        thread.start_new_thread(self.expand_sample, ())
+
+    def expand_sample(self):
         input_file = open(self.file_entry.get_text())
         samples = [l.strip("\n") for l in input_file.readlines()]
         input_file.close()
@@ -117,16 +142,50 @@ class MainWindow(Gtk.Window):
         expanded_samples = expansion.expand(samples,
             (self.lingo_toggle.get_active(), self.original_toggle.get_active(), 
             self.concepts_toggle.get_active(), self.disambiguation_toggle.get_active()),
+            (self.use_wordnet.get_active(), self.use_wikipedia.get_active()),
             *custom_dictionaries)
 
         output_file = open(self.file_entry.get_text() + "_expanded.txt", "w")
         output_file.write("\n".join(expanded_samples))
         output_file.close()
 
+        self.progress.stop()
 
     def run(self):
         self.connect("delete-event", Gtk.main_quit)
         self.show_all()
 
         Gtk.main()
+
+
+class ProgressWindow(Gtk.Window):
+    def __init__(self):
+        Gtk.Window.__init__(self, title="Please wait")
+
+        self.set_resizable(False)
+        self.set_border_width(10)
+
+        self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.add(self.vbox)
+
+        self.label = Gtk.Label("Expanding...")
+        self.vbox.pack_start(self.label, True, True, 0)
+
+        self.progressbar = Gtk.ProgressBar()
+        self.vbox.pack_start(self.progressbar, True, True, 0)
+
+    def start(self):
+        self.show_all()
+        self.set_modal(True)
+        self.should_continue = True
+        
+        GObject.timeout_add(50, self.show_progress)
+
+    def stop(self):
+        self.should_continue = False
+        self.destroy()
+
+    def show_progress(self):
+        self.progressbar.pulse()
+        return self.should_continue
 

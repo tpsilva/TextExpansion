@@ -6,9 +6,15 @@ import lingotranslator.translator as lingo_translator
 STOPWORDS_PATH = "../res/stopwords.txt"
 
 BABELNET_SHELL = "bash"
-BABELNET_SCRIPT = "/opt/babelnet-api-1.0.1/run-babelnet.sh"
-BABELNET_CONCEPTS_OPTION = "-TOKENTRANSLATION"
+BABELNET_SCRIPT = "/home/tiago/BabelNet/babelnet-api-1.0.1/run-babelnet.sh"
+BABELNET_CONCEPTS_OPTION = "-c"
 BABELNET_DIVIDER = "===DIVIDER==="
+
+WORDNET_INDEX = 0
+WIKIPEDIA_INDEX = 1
+
+WORDNET_ARG = "-wn"
+WIKIPEDIA_ARG = "-wiki"
 
 
 class EnglishDictionary:
@@ -63,7 +69,7 @@ class ConceptsDictionary(StopwordsDictionary):
         self.lingo = LingoDictionary()
         self.cache = {}
 
-    def translate(self, word):
+    def translate(self, word, babelnet_parameters):
         lingo_translated = self.lingo.translate(word)
 
         if word in self.stopwords or lingo_translated in self.stopwords:
@@ -71,19 +77,25 @@ class ConceptsDictionary(StopwordsDictionary):
 
         word = lingo_translated
 
+        if babelnet_parameters == (True, False): # wordnet only
+            babelnet_parameters_arg = WORDNET_ARG
+        elif babelnet_parameters == (False, True): # wikipedia only
+            babelnet_parameters_arg = WIKIPEDIA_ARG
+        else: # both
+            babelnet_parameters_arg = ""
+
         try:
             return self.cache[word]
         except:
-            concepts = self.get_concepts(word)
+            concepts = self.get_concepts(word, babelnet_parameters_arg)
             self.cache[word] = concepts
             return concepts
 
-    def get_concepts(self, word):
+    def get_concepts(self, word, babelnet_parameters_arg):
         output = subprocess.check_output([BABELNET_SHELL, BABELNET_SCRIPT, 
-            BABELNET_CONCEPTS_OPTION, word])
+            BABELNET_CONCEPTS_OPTION, babelnet_parameters_arg, word])
 
         concepts = output.split("\n")
-        concepts = concepts[concepts.index(BABELNET_DIVIDER) + 1:-1]
 
         return " ".join(concepts)
 
@@ -92,13 +104,19 @@ class DisambiguationDictionary(StopwordsDictionary):
         StopwordsDictionary.__init__(self)
         self.lingo = LingoDictionary()
     
-    def init_concepts(self, sentence):
+    def init_concepts(self, sentence, babelnet_parameters):
+        if babelnet_parameters == (True, False): # wordnet only
+            babelnet_parameters_arg = WORDNET_ARG
+        elif babelnet_parameters == (False, True): # wikipedia only
+            babelnet_parameters_arg = WIKIPEDIA_ARG
+        else: # both
+            babelnet_parameters_arg = ""
+
         sentence = self.lingo.translate(sentence)
         output = subprocess.check_output([BABELNET_SHELL, BABELNET_SCRIPT, 
-            sentence])
+            babelnet_parameters_arg, sentence])
 
-        output_lines = output.split("\n")
-        output_lines = output_lines[output_lines.index(BABELNET_DIVIDER) + 1:-1]
+        output_lines = output.split("\n")[:-1]
 
         self.concepts = dict([line.split("\t") for line in output_lines])
         self.remove_stopwords()
