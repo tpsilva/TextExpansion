@@ -6,9 +6,8 @@ import lingotranslator.translator as lingo_translator
 STOPWORDS_PATH = "../res/stopwords.txt"
 
 BABELNET_SHELL = "bash"
-BABELNET_SCRIPT = "/home/tiago/BabelNet/babelnet-api-1.0.1/run-babelnet.sh"
+BABELNET_SCRIPT = "~/BabelNet/babelnet-api-1.0.1/run-babelnet.sh"
 BABELNET_CONCEPTS_OPTION = "-c"
-BABELNET_DIVIDER = "===DIVIDER==="
 
 WORDNET_INDEX = 0
 WIKIPEDIA_INDEX = 1
