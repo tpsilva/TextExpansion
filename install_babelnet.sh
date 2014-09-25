@@ -4,6 +4,11 @@ mv run-babelnet.sh ~/BabelNet
 
 cd ~/BabelNet
 
+git clone https://gist.github.com/4483a973282528da1d81.git
+
+mv 4483a973282528da1d81/*.java .
+rm -rfv 4483a973282528da1d81
+
 echo "Extracting BabelNet"
 
 tar -jxvf babelnet_paths.tar.bz2
@@ -14,7 +19,7 @@ cd babelnet_paths
 tar -jxvf babel-core-lucene.tar.bz2
 cd ..
 
-tar -jxvf babelnet-api-1.0.1.tar.gz
+tar -xzvf babelnet-api-1.0.1.tar.gz
 
 cd babelnet-api-1.0.1/config
 
@@ -28,7 +33,7 @@ echo "babelnet.dir=/home/tiago/BabelNet/babelnet_paths" > babelnet.var.propertie
 
 cd ..
 
-mv ~/run-babelnet.sh .
+mv ~/BabelNet/run-babelnet.sh .
 
 mv create-kbpath-index.sh create-kbpath-index.sh.old
 
@@ -36,6 +41,10 @@ head create-kbpath-index.sh.old > create-kbpath-index.sh
 echo "java -Xmx1024m -Xms512m -XX:-UseGCOverheadLimit -classpath bin:lib/*:config it.uniroma1.lcl.knowledge.KnowledgeBasePathIndexFactory $1" >> create-kbpath-index.sh
 
 sh create-kbpath-index.sh ~/BabelNet/babelnet_paths
+
+mv ~/BabelNet/*.java ~/BabelNet/babelnet-api-1.0.1/src/it/uniroma1/lcl/babelnet
+
+ant
 
 echo "All done!"
 
