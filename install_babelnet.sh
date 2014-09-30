@@ -29,7 +29,7 @@ mv log4j.properties log4j.properties.old
 echo "log4j.rootLogger=DEBUG, file" > log4j.properties
 tail -n +2 log4j.properties.old >> log4j.properties
 
-echo "babelnet.dir=/home/tiago/BabelNet/babelnet_paths" > babelnet.var.properties
+echo "babelnet.dir=$HOME/BabelNet/babelnet_paths" > babelnet.var.properties
 
 cd ..
 
