@@ -31,7 +31,7 @@ echo "This script installs BabelNet in your system. The following files need to 
 echo "$BABELNET_PATHS"
 echo "$BABELNET_API"
 echo "$BABEL_CORE_LUCENE"
-echo "This script can download this files or you can download them manually and place them under ~/BabelNet"
+echo "This script can download these files or you can download them manually and place them under ~/BabelNet"
 echo "Do you want to download these files now? [y/n]"
 read -r resp
 
@@ -43,7 +43,7 @@ else
     echo "Do you want to continue? [y/n]"
     read -r inner_resp
 
-    if [ $resp != 'y' ]
+    if [ $inner_resp != 'y' ]
     then
         exit 1
     fi
