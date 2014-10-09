@@ -87,7 +87,7 @@ mv ~/BabelNet/run-babelnet.sh .
 mv create-kbpath-index.sh create-kbpath-index.sh.old
 
 head create-kbpath-index.sh.old > create-kbpath-index.sh
-echo "java -Xmx1024m -Xms512m -XX:-UseGCOverheadLimit -classpath bin:lib/*:config it.uniroma1.lcl.knowledge.KnowledgeBasePathIndexFactory $1" >> create-kbpath-index.sh
+echo "java -Xmx1024m -Xms512m -XX:-UseGCOverheadLimit -classpath bin:lib/*:config it.uniroma1.lcl.knowledge.KnowledgeBasePathIndexFactory \$1" >> create-kbpath-index.sh
 
 sh create-kbpath-index.sh ~/BabelNet/babelnet_paths
 
