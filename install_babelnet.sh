@@ -1,4 +1,53 @@
-echo "Before running this script, make sure you have downloaded the BabelNet packages and placed them in ~/BabelNet"
+#!/bin/bash
+
+BABELNET_PATHS="http://lasid.sor.ufscar.br/assets/babelnet_paths.tar.bz2"
+BABELNET_API="http://lasid.sor.ufscar.br/assets/babelnet-api-1.0.1.tar.gz"
+BABEL_CORE_LUCENE="http://lasid.sor.ufscar.br/assets/babel-core-lucene.tar.bz2"
+
+function download_babelnet {
+    mkdir ~/BabelNet
+    cd ~/BabelNet
+
+    echo "Downloading BabelNet api"
+    wget -c $BABELNET_API
+
+    echo "Downloading BabelNet paths"
+    wget -c $BABELNET_PATHS
+
+    echo "Downloading BabelNet Core Lucene"
+    wget -c $BABEL_CORE_LUCENE
+}
+
+echo "Before running this script, make sure you have Java JDK version 7 or higher and the ant tool installed in your sytstem."
+echo "Do you want to continue? [y/n]"
+read -r resp
+
+if [ $resp != 'y' ]
+then
+    exit 1
+fi
+
+echo "This script installs BabelNet in your system. The following files need to be downloaded:"
+echo "$BABELNET_PATHS"
+echo "$BABELNET_API"
+echo "$BABEL_CORE_LUCENE"
+echo "This script can download this files or you can download them manually and place them under ~/BabelNet"
+echo "Do you want to download these files now? [y/n]"
+read -r resp
+
+if [ $resp == 'y' ]
+then
+    download_babelnet
+else
+    echo "From this point, this script assumes you have downloaded the files mentioned before and placed them under ~/BabelNet"
+    echo "Do you want to continue? [y/n]"
+    read -r inner_resp
+
+    if [ $resp != 'y' ]
+    then
+        exit 1
+    fi
+fi
 
 mv run-babelnet.sh ~/BabelNet
 
