@@ -49,7 +49,7 @@ else
     fi
 fi
 
-mv run-babelnet.sh ~/BabelNet
+cp run-babelnet.sh ~/BabelNet
 
 cd ~/BabelNet
 
@@ -74,15 +74,11 @@ cd babelnet-api-1.0.1/config
 
 echo "Configuring BabelNet"
 
-mv log4j.properties log4j.properties.old
-echo "log4j.rootLogger=DEBUG, file" > log4j.properties
-tail -n +2 log4j.properties.old >> log4j.properties
-
 echo "babelnet.dir=$HOME/BabelNet/babelnet_paths" > babelnet.var.properties
 
 cd ..
 
-mv ~/BabelNet/run-babelnet.sh .
+cp ~/BabelNet/run-babelnet.sh .
 
 mv create-kbpath-index.sh create-kbpath-index.sh.old
 
@@ -94,6 +90,10 @@ sh create-kbpath-index.sh ~/BabelNet/babelnet_paths
 mv ~/BabelNet/*.java ~/BabelNet/babelnet-api-1.0.1/src/it/uniroma1/lcl/babelnet
 
 ant
+
+mv log4j.properties log4j.properties.old
+echo "log4j.rootLogger=DEBUG, file" > log4j.properties
+tail -n +2 log4j.properties.old >> log4j.properties
 
 echo "All done!"
 
