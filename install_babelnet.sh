@@ -91,6 +91,7 @@ mv ~/BabelNet/*.java ~/BabelNet/babelnet-api-1.0.1/src/it/uniroma1/lcl/babelnet
 
 ant
 
+cd config
 mv log4j.properties log4j.properties.old
 echo "log4j.rootLogger=DEBUG, file" > log4j.properties
 tail -n +2 log4j.properties.old >> log4j.properties
