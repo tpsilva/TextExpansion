@@ -3,6 +3,7 @@
 BABELNET_PATHS="http://lasid.sor.ufscar.br/assets/babelnet_paths.tar.bz2"
 BABELNET_API="http://lasid.sor.ufscar.br/assets/babelnet-api-1.0.1.tar.gz"
 BABEL_CORE_LUCENE="http://lasid.sor.ufscar.br/assets/babel-core-lucene.tar.bz2"
+BASEDIR=$(dirname $0)
 
 function download_babelnet {
     mkdir ~/BabelNet
@@ -49,7 +50,7 @@ else
     fi
 fi
 
-cp run-babelnet.sh ~/BabelNet
+cp $BASEDIR/run-babelnet.sh ~/BabelNet
 
 cd ~/BabelNet
 
@@ -75,6 +76,7 @@ cd babelnet-api-1.0.1/config
 echo "Configuring BabelNet"
 
 echo "babelnet.dir=$HOME/BabelNet/babelnet_paths" > babelnet.var.properties
+echo "knowledge.graph.pathIndex=$HOME/BabelNet" > knowledge.var.properties
 
 cd ..
 
