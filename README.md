@@ -1,17 +1,17 @@
 TextExpansion
 =============
 
-TextExpansion is a tool that can be used to expand short texts by using lexic and/or semantic dictionaries. This tool is part of an academic research an a published paper with the complete description of how it works can be found [here](http://www.dt.fee.unicamp.br/~tiago/papers/TPS_ENIAC14.pdf) (in portuguese).
+TextExpansion is a tool that can be used to expand short texts by using lexic and/or semantic dictionaries. This tool is part of an academic research and a published paper with the complete description of how it works can be found [here](http://www.dt.fee.unicamp.br/~tiago/papers/TPS_ENIAC14.pdf) (in portuguese).
 
 Installation
 ------------
 
-To install TextExpansion, execute the setup.sh script. Text Expansion also uses BabelNet as a semantic dictionary. BabelNet can be installed by using the install_babelnet.sh script.
+To install TextExpansion, execute the *setup.sh* script. Text Expansion also uses BabelNet as a semantic dictionary. BabelNet can be installed by using the *install_babelnet.sh* script.
 
 Using TextExpansion
 -------------------
 
-TextExpansion can be used via a graphic UI or via command line. To use its UI just run the main.py program without any arguments. If you want to use it via command line, run the main.py program passing the arguments on the following format:
+TextExpansion can be used via a graphic UI or via command line. To use its UI just run the *main.py* program without any arguments. If you want to use it via command line, run the *main.py* program passing the arguments on the following format:
 
 ```
 $ python main.py <default_dictionaries> [babelnet_config] <input_file> [custom_dictionaries]
